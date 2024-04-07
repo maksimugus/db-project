@@ -7,7 +7,7 @@ WHILE i <= n LOOP
     INSERT INTO cities (name, country_id)
     VALUES (
         'city' || i,
-        1 + random() * (n - 1)
+        ceil(random() * n)
     );
     i := i + 1;
 END LOOP;

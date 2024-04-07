@@ -15,8 +15,7 @@ WHILE i <= n LOOP
             WHEN 1 THEN 'F'
         END,
         TIMESTAMP '1900-01-01' + random() * (TIMESTAMP '2024-01-01' - TIMESTAMP '1900-01-01'),
-        1 + random() * (n - 1),
-        CURRENT_DATE
+        ceil(random() * n)
     );
     i := i + 1;
 END LOOP;

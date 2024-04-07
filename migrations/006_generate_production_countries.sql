@@ -6,8 +6,8 @@ BEGIN
 WHILE i <= n LOOP
     INSERT INTO production_countries (country_id, film_id)
     VALUES (
-        1 + random() * (n - 1),
-        1 + random() * (n - 1)
+        ceil(random() * n),
+        ceil(random() * n)
     );
     i := i + 1;
 END LOOP;

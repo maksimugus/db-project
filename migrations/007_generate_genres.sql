@@ -6,7 +6,7 @@ BEGIN
 WHILE i <= n LOOP
     INSERT INTO genres (film_id, genre)
     VALUES (
-        1 + random() * (n - 1),
+        ceil(random() * n),
         CASE round(random() * 17)
             WHEN 0 THEN 'action'
             WHEN 1 THEN 'adventure'

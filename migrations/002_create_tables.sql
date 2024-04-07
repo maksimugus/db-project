@@ -101,7 +101,7 @@ CREATE TABLE users (
     email_address VARCHAR(320) NOT NULL,
     sex CHAR(1),
     date_of_birth DATE,
-    city_id INT NULL REFERENCES cities(id)
+    city_id INT REFERENCES cities(id)
 );
 
 CREATE TABLE reviews (

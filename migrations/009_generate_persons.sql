@@ -17,7 +17,7 @@ WHILE i <= n LOOP
         END,
         100 * (1 + random()),
         date_of_birth,
-        1 + random() * (n - 1),
+        ceil(random() * n),
         CASE round(random())
             WHEN 0 THEN date_of_birth + random() * INTERVAL '1 year'
             WHEN 1 THEN NULL
