@@ -48,7 +48,7 @@ CREATE TABLE persons (
     date_of_birth DATE NOT NULL,
     city_of_birth_id INT NOT NULL REFERENCES cities(id),
     date_of_death DATE,
-    partner_id INT
+    partner_id INT REFERENCES persons(id)
 );
 
 CREATE TABLE producers (
@@ -101,14 +101,14 @@ CREATE TABLE users (
     email_address VARCHAR(320) NOT NULL,
     sex CHAR(1),
     date_of_birth DATE,
-    city_id INT NULL
+    city_id INT NULL REFERENCES cities(id)
 );
 
 CREATE TABLE reviews (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
-    text TEXT NULL,
-    type review_type NOT NULL,
+    review_text TEXT NULL,
+    review_type review_type NOT NULL,
     PRIMARY KEY(user_id, film_id)
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE rated_films (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
     rate SMALLINT NOT NULL,
-    date_of_rating TIMESTAMP,
+    date_of_rating DATE NOT NULL,
     PRIMARY KEY(user_id, film_id)
 );
 
@@ -131,6 +131,6 @@ CREATE TABLE viewing_information (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
     last_viewing_date DATE NOT NULL,
-    timestamp TIME NOT NULL,
+    timestamp_of_view_ending TIME NOT NULL,
     PRIMARY KEY(user_id, film_id)
 );
