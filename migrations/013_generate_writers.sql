@@ -4,10 +4,10 @@ DECLARE
     i INT := 1;
 BEGIN
 WHILE i <= n LOOP
-    INSERT INTO cities (name, country_id)
+    INSERT INTO writers (person_id, film_id)
     VALUES (
-        'city' || i,
-        1 + random() * 999999
+        i / 10000 + 1,
+        (i % 100 + random()) * 10000
     );
     i := i + 1;
 END LOOP;
