@@ -1,15 +1,15 @@
-CREATE TABLE countries (
+CREATE TABLE IF NOT EXISTS countries (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE cities (
+CREATE TABLE IF NOT EXISTS cities (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(100) NOT NULL,
     country_id INT NOT NULL REFERENCES countries(id)
 );
 
-CREATE TABLE films (
+CREATE TABLE IF NOT EXISTS films (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(200),
     year_of_production INT,
@@ -21,25 +21,25 @@ CREATE TABLE films (
     duration TIME
 );
 
-CREATE TABLE production_countries (
+CREATE TABLE IF NOT EXISTS production_countries (
     film_id INT NOT NULL REFERENCES films(id),
     country_id INT NOT NULL REFERENCES countries(id),
     PRIMARY KEY(film_id, country_id)
 );
 
-CREATE TABLE genres (
+CREATE TABLE IF NOT EXISTS genres (
     film_id INT NOT NULL REFERENCES films(id),
     genre genre NOT NULL
 );
 
-CREATE TABLE tops (
+CREATE TABLE IF NOT EXISTS tops (
     name VARCHAR(150) NOT NULL,
     film_id INT NOT NULL REFERENCES films(id),
     number_in_the_top INT NOT NULL,
     PRIMARY KEY(name, film_id)
 );
 
-CREATE TABLE persons (
+CREATE TABLE IF NOT EXISTS persons (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     first_name VARCHAR(106) NOT NULL,
     last_name VARCHAR(107) NOT NULL,
@@ -51,49 +51,49 @@ CREATE TABLE persons (
     partner_id INT REFERENCES persons(id)
 );
 
-CREATE TABLE producers (
+CREATE TABLE IF NOT EXISTS producers (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE directors (
+CREATE TABLE IF NOT EXISTS directors (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE artists (
+CREATE TABLE IF NOT EXISTS artists (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE operators (
+CREATE TABLE IF NOT EXISTS operators (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE writers (
+CREATE TABLE IF NOT EXISTS writers (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE composers (
+CREATE TABLE IF NOT EXISTS composers (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE actors (
+CREATE TABLE IF NOT EXISTS actors (
     person_id INT NOT NULL REFERENCES persons(id),
     film_id INT NOT NULL REFERENCES films(id),
     PRIMARY KEY(person_id, film_id)
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     nickname VARCHAR(80) NOT NULL,
     first_name VARCHAR(106),
@@ -104,7 +104,7 @@ CREATE TABLE users (
     city_id INT REFERENCES cities(id)
 );
 
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
     review_text TEXT NULL,
@@ -112,14 +112,14 @@ CREATE TABLE reviews (
     PRIMARY KEY(user_id, film_id)
 );
 
-CREATE TABLE favourite_films (
+CREATE TABLE IF NOT EXISTS favourite_films (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
     date_of_addition DATE NOT NULL,
     PRIMARY KEY(user_id, film_id)
 );
 
-CREATE TABLE rated_films (
+CREATE TABLE IF NOT EXISTS rated_films (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
     rate SMALLINT NOT NULL,
@@ -127,7 +127,7 @@ CREATE TABLE rated_films (
     PRIMARY KEY(user_id, film_id)
 );
 
-CREATE TABLE viewing_information (
+CREATE TABLE IF NOT EXISTS viewing_information (
     user_id INT NOT NULL REFERENCES users(id),
     film_id INT NOT NULL REFERENCES films(id),
     last_viewing_date DATE NOT NULL,
