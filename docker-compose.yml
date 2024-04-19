@@ -5,7 +5,7 @@ name: "my_infrastructure"
 services:
   postgres:
     image: postgres:14.3-alpine
-    container_name: my_postrgres_container
+    container_name: my_postgres_container
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -17,5 +17,19 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
       VERSION: ${VERSION}
       USERS_NUMBER: ${USERS_NUMBER}
+  
+  python:
+    image: python:3.11-alpine
+    container_name: faker
+    depends_on:
+      - postgres
+    working_dir: /tmp/source
+    volumes:
+      - ./data_generation:/tmp/source
+    restart: "on-failure"
+    command: ["sh", "-c", "cd /tmp/source && pip install -r requirements.txt
+     && python main.py -u \"$POSTGRES_USER\" -p \"$POSTGRES_PASSWORD\" -d \"$POSTGRES_DB\"
+      -H postgres -P \"$POSTGRES_PORT\" -c \"$COUNT\" -b \"$BATCH_SIZE\""]
