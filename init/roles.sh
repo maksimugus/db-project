@@ -15,7 +15,7 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO group_role;
 EOSQL
 
 i=0
-while [ $i -lt $USERS_NUMBER ]; do
+while [ $i -lt "$USERS_NUMBER" ]; do
     psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<-EOSQL
     CREATE USER user$i;
     GRANT group_role TO user$i;

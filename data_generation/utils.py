@@ -19,7 +19,6 @@ def run(func):
             connection.commit()
         except Exception as e:
             print(str(e)[:100])
-
             connection.rollback()
             exit(1)
         

@@ -7,6 +7,12 @@ services:
     image: postgres:14.3-alpine
     container_name: db_kinopoisk
     restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+      - ./queries:/queries
     ports:
       - "5432:5432"
     healthcheck:
@@ -14,23 +20,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-      - ./init:/docker-entrypoint-initdb.d
-      - ./migrations:/migrations
-    env_file:
-      - .env
   
-  python:
+  faker:
     image: python:3.11-alpine
     container_name: faker
+    restart: on-failure
     depends_on:
       postgres:
         condition: service_healthy
-    working_dir: /tmp/source
-    volumes:
-      - ./data_generation:/tmp/source
-    restart: "on-failure"
-    command: ["sh", "-c", "cd /tmp/source && pip install -r requirements.txt && python main.py"]
     env_file:
       - .env
+    volumes:
+      - ./data_generation:/tmp/source
+    working_dir: /tmp/source
+    command: ["sh", "-c", "pip install -r requirements.txt && python main.py"]
