@@ -1,0 +1,1 @@
+ALTER TABLE genres ADD PRIMARY KEY (film_id, genre);
