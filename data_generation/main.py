@@ -34,11 +34,13 @@ def generate_cities(cursor, table_name, connection):
 def generate_films(cursor, table_name, connection):
     text = mimesis.Text()
     datetime = mimesis.Datetime()
-    year_of_production = datetime.year(minimum=1950, maximum=2000)
-    world_premiere = datetime.date(start=year_of_production)
-    films = [(text.title()[:150], year_of_production, text.quote(), random.randint(10 ** 6, 10 ** 9),
+    films = []
+    for _ in range(count):
+        year_of_production = datetime.year(minimum=1950, maximum=2000)
+        world_premiere = datetime.date(start=year_of_production)
+        films.append((text.title()[:150], year_of_production, text.quote(), random.randint(10 ** 6, 10 ** 9),
               random.randint(10 ** 6, 10 ** 10), world_premiere, datetime.date(start=world_premiere.year),
-              datetime.formatted_time()) for _ in range(count)]
+              datetime.formatted_time()))
     execute_batch(cursor,
                   f"INSERT INTO {table_name} (name, year_of_production, slogan, budget, world_fees, world_primiere, "
                   f"primiere_in_russia, duration) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -121,6 +123,7 @@ def generate_users(cursor, table_name, connection):
 def generate_reviews(cursor, table_name, connection, review_types):
     text = mimesis.Text()
     reviews = [(i, random.randint(1, count), text.text(), random.choice(review_types)) for i in range(1, count + 1)]
+    random.shuffle(reviews)
     execute_batch(cursor, f"INSERT INTO {table_name} (user_id, film_id, review_text, review_type) VALUES (%s, %s, %s, %s)",
                   reviews, page_size=batch_size)
 
