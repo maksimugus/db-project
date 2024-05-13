@@ -1,5 +1,6 @@
 -- Active: 1711916919543@@127.0.0.1@5432@kinopoisk@public
 -- Вывести топ 10 фильмов для каждого жанра по средней оценке.
+EXPLAIN ANALYSE
 WITH
     film_ratings AS (
         SELECT film_id, AVG(rate)::DECIMAL(3, 1) AS rating
@@ -20,6 +21,6 @@ WITH
 SELECT genre, name, rating
 FROM
     top_films_in_genre
-    JOIN films ON id = film_id
+    JOIN films ON film_id = id
 WHERE
     rn <= 10

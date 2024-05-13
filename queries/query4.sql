@@ -1,4 +1,5 @@
 -- Вывести среднее число актёров в каждом фильме каждый год.
+EXPLAIN ANALYSE
 WITH
     actors_number_by_film AS (
         SELECT film_id, COUNT(*) AS actors_number
