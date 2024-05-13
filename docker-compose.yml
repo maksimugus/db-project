@@ -1,17 +1,16 @@
-version: '3.5'
-
 name: "db_project"
 
 services:
   postgres:
     image: postgres:14.3-alpine
-    container_name: db_kinopoisk
+    container_name: kinopoisk_db
     restart: unless-stopped
     env_file:
       - .env
     volumes:
       - ./pgdata:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d
+      - ./migrations:/migrations
       - ./queries:/queries
     ports:
       - "5432:5432"
@@ -21,9 +20,9 @@ services:
       timeout: 5s
       retries: 5
   
-  faker:
+  python:
     image: python:3.11-alpine
-    container_name: faker
+    container_name: data_generator
     restart: on-failure
     depends_on:
       postgres:
