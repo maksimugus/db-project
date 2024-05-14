@@ -6,4 +6,3 @@ CREATE INDEX writers_film_id ON writers (film_id);
 CREATE INDEX composers_film_id ON composers (film_id);
 CREATE INDEX actors_film_id ON actors (film_id);
 CREATE INDEX rated_films_film_id ON rated_films (film_id);
-CREATE INDEX production_countries_country_id ON production_countries USING (country_id);

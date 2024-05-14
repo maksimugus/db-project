@@ -1,6 +1,6 @@
--- Active: 1711916919543@@127.0.0.1@5432@kinopoisk@public
+-- Active: 1712429649802@@127.0.0.1@5432@kinopoisk
 -- Вывести топ 10 фильмов для каждого жанра по средней оценке.
-EXPLAIN ANALYSE
+EXPLAIN --ANALYSE
 WITH
     film_ratings AS (
         SELECT film_id, AVG(rate)::DECIMAL(3, 1) AS rating

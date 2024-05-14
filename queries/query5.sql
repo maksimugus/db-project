@@ -1,5 +1,5 @@
 -- Вывести число фильмов, снятых в каждой стране, и их средний рейтинг.
-EXPLAIN ANALYSE
+EXPLAIN --ANALYSE
 WITH
     film_ratings AS (
         SELECT film_id, AVG(rate)::DECIMAL(3, 1) AS rating

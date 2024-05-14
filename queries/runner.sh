@@ -9,7 +9,7 @@ attempts=$QUERY_RUN_ATTEMPTS
 path="$PWD/execution_reports"
 mkdir -p "$path" 2>/dev/null
 report_file="$path/$(date +"%Y-%m-%d_%H-%M-%S").tsv"
-printf "query\tbest time\tavg time\tworst time\n" >> "$report_file"
+echo "query;best;avg;worst" >> "$report_file"
 
 for query_file in "$PWD"/*.sql; do
     query_name=$(basename "$query_file")
@@ -39,5 +39,5 @@ for query_file in "$PWD"/*.sql; do
     done
     avg=$(echo "scale=3; $sum/3" | bc -l)
 
-    printf "%s\t%s\t%s\t%s\n" "$query_name" "$best" "$avg" "$worst" >> "$report_file"
+    echo "$query_name;$best;$avg;$worst" >> "$report_file"
 done
