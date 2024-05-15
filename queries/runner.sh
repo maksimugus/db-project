@@ -8,7 +8,7 @@ attempts=$QUERY_RUN_ATTEMPTS
 
 path="$PWD/execution_reports"
 mkdir -p "$path" 2>/dev/null
-report_file="$path/$(date +"%Y-%m-%d_%H-%M-%S").tsv"
+report_file="$path/$(date +"%Y-%m-%d_%H-%M-%S").csv"
 echo "query;best;avg;worst" >> "$report_file"
 
 for query_file in "$PWD"/*.sql; do
