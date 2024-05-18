@@ -1,2 +1,3 @@
 /pgdata
 data_generation/__pycache__
+backups/backup_files
