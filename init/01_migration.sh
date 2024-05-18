@@ -1,6 +1,12 @@
 #!/bin/bash
 
+db=$POSTGRES_DB
+user=$POSTGRES_USER
+password=$POSTGRES_PASSWORD
+host=$POSTGRES_HOST
+port=$POSTGRES_PORT
 target_version=${VERSION:-latest}
+
 target_x=$(echo "$target_version" | cut -d '.' -f 1)
 target_y=$(echo "$target_version" | cut -d '.' -f 2)
 target_z=$(echo "$target_version" | cut -d '.' -f 3)
@@ -26,7 +32,7 @@ for migration_file in $(find migrations/*.sql | sort -V); do
     fi
 
     echo "Applying migration: $migration_file"
-    psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$migration_file"
+    PGPASSWORD="$password" psql -U "$user" -d "$db" -p "$port" -h "$host" -f "$migration_file"
 done
 
 echo "Migration complete. Current version: $target_version."

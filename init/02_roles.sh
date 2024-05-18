@@ -1,6 +1,12 @@
 #!/bin/bash
 
-psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<-EOSQL
+db=$POSTGRES_DB
+user=$POSTGRES_USER
+password=$POSTGRES_PASSWORD
+host=$POSTGRES_HOST
+port=$POSTGRES_PORT
+
+PGPASSWORD="$password" psql -U "$user" -d "$db" -p "$port" -h "$host" <<-EOSQL
 CREATE USER reader;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO reader;
 
@@ -16,7 +22,7 @@ EOSQL
 
 i=0
 while [ $i -lt "$USERS_NUMBER" ]; do
-    psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" <<-EOSQL
+    PGPASSWORD="$password" psql -U "$user" -d "$db" -p "$port" -h "$host" <<-EOSQL
     CREATE USER user$i;
     GRANT group_role TO user$i;
 EOSQL
