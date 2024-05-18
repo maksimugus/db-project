@@ -2,8 +2,9 @@
 
 db=$POSTGRES_DB
 user=$POSTGRES_USER
-port=$POSTGRES_PORT
+password=$POSTGRES_PASSWORD
 host=$POSTGRES_HOST
+port=$POSTGRES_PORT
 attempts=$QUERY_RUN_ATTEMPTS
 
 path="$PWD/execution_reports"
@@ -18,7 +19,7 @@ for query_file in "$PWD"/*.sql; do
 
     echo "Started $query_name"
     for ((i = 0; i < attempts; i++)); do
-        res=$(PGPASSWORD="$POSTGRES_PASSWORD" psql -U "$user" -d "$db" -p "$port" -h "$host" -f "$query_file" \
+        res=$(PGPASSWORD="$password" psql -U "$user" -d "$db" -p "$port" -h "$host" -f "$query_file" \
         | grep "Execution Time" \
         | awk -F '[: ]+' '{print $4}')
         results+=("$res")

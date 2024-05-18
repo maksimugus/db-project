@@ -1,0 +1,58 @@
+-- Active: 1711916919543@@127.0.0.1@5432@kinopoisk
+CREATE TABLE IF NOT EXISTS tmp_films (
+    id INT NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    year_of_production INT NOT NULL,
+    slogan TEXT,
+    budget MONEY,
+    world_fees MONEY,
+    world_primiere DATE,
+    primiere_in_russia DATE,
+    duration TIME
+)
+PARTITION BY
+    RANGE (year_of_production);
+
+CREATE TABLE IF NOT EXISTS films_1950s PARTITION OF tmp_films FOR
+VALUES
+FROM (1950) TO (1960);
+
+CREATE TABLE IF NOT EXISTS films_1960s PARTITION OF tmp_films FOR
+VALUES
+FROM (1960) TO (1970);
+
+CREATE TABLE IF NOT EXISTS films_1970s PARTITION OF tmp_films FOR
+VALUES
+FROM (1970) TO (1980);
+
+CREATE TABLE IF NOT EXISTS films_1980s PARTITION OF tmp_films FOR
+VALUES
+FROM (1980) TO (1990);
+
+CREATE TABLE IF NOT EXISTS films_1990s PARTITION OF tmp_films FOR
+VALUES
+FROM (1990) TO (2001);
+
+INSERT INTO tmp_films SELECT * FROM films;
+
+ALTER TABLE films RENAME TO old_films;
+
+ALTER TABLE tmp_films RENAME TO films;
+
+ALTER TABLE films_1950s
+ADD CONSTRAINT films_1950s_pkey PRIMARY KEY (id);
+
+ALTER TABLE films_1960s
+ADD CONSTRAINT films_1960s_pkey PRIMARY KEY (id);
+
+ALTER TABLE films_1970s
+ADD CONSTRAINT films_1970s_pkey PRIMARY KEY (id);
+
+ALTER TABLE films_1980s
+ADD CONSTRAINT films_1980s_pkey PRIMARY KEY (id);
+
+ALTER TABLE films_1990s
+ADD CONSTRAINT films_1990s_pkey PRIMARY KEY (id);
+
+ALTER TABLE films
+ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;
