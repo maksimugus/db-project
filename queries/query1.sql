@@ -1,4 +1,3 @@
--- Active: 1711916919543@@127.0.0.1@5432@kinopoisk@public
 -- Вывести топ 250 фильмов по оценке.
 EXPLAIN ANALYSE
 WITH
