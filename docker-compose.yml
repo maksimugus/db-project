@@ -7,7 +7,7 @@ services:
   etcd1: &etcd
       image: patroni
       networks: [ app_tier ]
-      env_file: etcd.env
+      env_file: patroni/etcd.env
       container_name: etcd1
       hostname: etcd1
       command: etcd --name etcd1 --initial-advertise-peer-urls http://etcd1:2380
@@ -23,7 +23,7 @@ services:
       networks: [ app_tier ]
       env_file: 
         - .env
-        - patroni.env
+        - patroni/patroni.env
       hostname: haproxy
       container_name: haproxy
       volumes:
@@ -43,7 +43,7 @@ services:
   patroni1:
       image: patroni
       networks: [ app_tier ]
-      env_file: patroni.env
+      env_file: patroni/patroni.env
       hostname: patroni1
       container_name: patroni1
       environment:
@@ -53,7 +53,7 @@ services:
   patroni2:
       image: patroni
       networks: [ app_tier ]
-      env_file: patroni.env
+      env_file: patroni/patroni.env
       hostname: patroni2
       container_name: patroni2
       environment:
@@ -90,3 +90,33 @@ services:
       - ./data_generation:/tmp/source
     working_dir: /tmp/source
     command: ["sh", "-c", "pip install -r requirements.txt && python main.py"]
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  pg-exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: pg-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_URI: "${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
+      DATA_SOURCE_USER: ${POSTGRES_USER}
+      DATA_SOURCE_PASS: ${POSTGRES_PASSWORD}
+      PG_EXPORTER_EXTEND_QUERY_PATH: ./home/queries.yml
+    volumes:
+      - ./monitoring/queries.yml:/home/queries.yml
+    links:
+      - haproxy
+      - prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
