@@ -93,6 +93,7 @@ services:
 
   prometheus:
     image: prom/prometheus
+    networks: [ app_tier ]
     container_name: prometheus
     ports:
       - 9090:9090
@@ -101,6 +102,7 @@ services:
 
   pg-exporter:
     image: prometheuscommunity/postgres-exporter
+    networks: [ app_tier ]
     container_name: pg-exporter
     ports:
       - 9187:9187
@@ -108,15 +110,13 @@ services:
       DATA_SOURCE_URI: "${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
       DATA_SOURCE_USER: ${POSTGRES_USER}
       DATA_SOURCE_PASS: ${POSTGRES_PASSWORD}
-      PG_EXPORTER_EXTEND_QUERY_PATH: ./home/queries.yml
-    volumes:
-      - ./monitoring/queries.yml:/home/queries.yml
     links:
       - haproxy
       - prometheus
 
   grafana:
     image: grafana/grafana
+    networks: [ app_tier ]
     container_name: grafana
     ports:
       - 3000:3000
