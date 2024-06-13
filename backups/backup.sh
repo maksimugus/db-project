@@ -9,6 +9,7 @@ interval=$BACKUP_INTERVAL
 retain_count=$BACKUP_RETAIN_COUNT
 
 backup_folder_name="backup_files"
+mkdir -p "$backup_folder_name"
 
 while true; do
     backup_name=$(date +"%Y-%m-%d_%H-%M-%S")
